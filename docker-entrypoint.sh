@@ -2,5 +2,7 @@
 set -eu
 
 bundle check || true
-exec "$@"
 
+yarn check --integrity --silent || true
+
+exec "$@"

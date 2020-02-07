@@ -13,3 +13,23 @@ services:
     # for pry-byebug
     stdin_open: true
     tty: true
+
+    environment:
+      # webpackのアセットをwebpack-dev-serverから取得する
+      - WEBPACKER_DEV_SERVER_HOST=webpack
+      - WEBPACKER_DEV_SERVER_PUBLIC=localhost:3035
+      # dbコンテナに接続する
+      - DATABASE_URL=postgresql://postgres:password@db/docker_for_rails_try_and_learn_development
+
+  webpack:
+    build: .
+    # Rubyのbinstubを経由してサーバーを実行するようにしている
+    command: ruby ./bin/webpack-dev-server
+    ports:
+      - "3035:3035"
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+    volumes:
+      - .:/app
+      # node_modulesはイメージにあるものを使う
+      - /app/node_modules
